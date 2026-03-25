@@ -1,0 +1,4 @@
+com\contact\dto\Contact.class
+com\contact\controller\ContactController.class
+com\contact\ApiConfig.class
+com\contact\ContactSpringbootAppApplication.class
