@@ -14,9 +14,13 @@ phases:
       - ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
       - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION:-us-east-1}
       - REPOSITORY_URI=587953674079.dkr.ecr.us-east-1.amazonaws.com/contact-app-registry
+      - ECR_REGISTRY=587953674079.dkr.ecr.us-east-1.amazonaws.com
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
-      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $REPOSITORY_URI
+      - echo "ACCOUNT_ID=$ACCOUNT_ID"
+      - echo "ECR_REGISTRY=$ECR_REGISTRY"
+      - echo "REPOSITORY_URI=$REPOSITORY_URI"
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
   build:
     commands:
       - echo "Running Maven build..."
