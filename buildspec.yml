@@ -2,11 +2,17 @@
 version: 0.2
  
 phases:
+  install:
+    runtime-versions:
+      java: corretto17
+
   pre_build: 
     commands:
 
       - echo "Logging in to Amazon ECR..."
       - aws --version
+      - ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION:-us-east-1}
       - REPOSITORY_URI=587953674079.dkr.ecr.us-east-1.amazonaws.com/contact-app-registry
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
